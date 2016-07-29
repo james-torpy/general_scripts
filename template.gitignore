@@ -1,9 +1,20 @@
 # Specific files #
 ##################
-applets/REMOVEME/
 REMOVEME/
 results/
+raw_files/
+scripts/readgen/logs/
 
+# Data #
+########
+*.bam
+*.bed
+*.fasta
+*.fastq
+*.fq
+*.gff
+*.gtf
+*.gz
 
 # Compiled source #
 ###################
@@ -32,6 +43,7 @@ results/
 *.log
 *.o*
 *.po*
+*.history
 *.sql
 *.sqlite
 

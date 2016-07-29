@@ -1,16 +1,17 @@
 #!/bin/bash
 
 #make directory hierachy
-projectname="Grant"
-samplename="samples"
+projectname="benchmark"
+samplename="reads"
+inExt=".pbsim"
 
 homeDir="/home/jamtor"
 projectDir="$homeDir/projects/$projectname"
 resultsDir="$projectDir/results"
-inPath="$resultsDir/$samplename.trimgalore"
+inPath="$resultsDir/$samplename$inExt"
 
 #create an array of the input .fq files:
-inFiles=( $(ls $inPath/**/*.fq) )
+inFiles=( $(ls $inPath/**/*.fastq) )
 echo -e
 echo These are the inFiles:
 echo ${inFiles[@]}
@@ -46,13 +47,13 @@ for file in ${inFiles[@]}; do
 	echo $rename_line
 
 #define uniqueIDs for each sample to name the cluster jobs:
-    uniqueID = `basename $file`
+    uniqueID=`basename $file`
 
 #submit each job to the cluster, holding each job until the previous corresponding jobs are
 #complete:
 	#qsub -N COPY_$uniqueID -b y -wd $logDir -j y -R y -pe smp 1 -V $copy_line
 
-	#qsub -N GZIP_$uniqueID -hold_jid COPY_$uniqueID -b y -wd $logDir -j y -R y -pe smp 1 -V $gzip_line
+	qsub -N GZIP_$uniqueID -hold_jid COPY_$uniqueID -b y -wd $logDir -j y -R y -pe smp 1 -V $gzip_line
 
 	#qsub -N RENAME_$uniqueID -hold_jid GZIP_$uniqueID -b y -wd $logDir -j y -R y -pe smp 1 -V $rename_line
 
